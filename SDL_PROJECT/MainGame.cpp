@@ -14,6 +14,9 @@ void MainGame::run()
 	initSystems();
 
 	_sprite.init(-1, -1, 2, 2);
+
+	_texture = ImageLoader::loadPNG("Textures/PNG/bush.png");
+
 	gameLoop();
 }
 
@@ -46,6 +49,7 @@ void MainGame::initShaders()
 	_program.compileShaders("Shaders/default.vert", "Shaders/default.frag");
 	_program.bindAttribute("vertexPos");
 	_program.bindAttribute("vertexColor");
+	_program.bindAttribute("UV");
 	_program.linkShaders();
 }
 
@@ -65,11 +69,17 @@ void MainGame::drawGame()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	_program.use();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _texture.ID);
+	GLint textureLocation = _program.getUniformLocation("mySampler");
+	glUniform1i(textureLocation, 0);
+
 
 	_sprite.draw();
 	GLuint timeLocation = _program.getUniformLocation("time");
 	glUniform1f(timeLocation, _time);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	_program.unuse();
 
 	SDL_GL_SwapWindow(m_window);

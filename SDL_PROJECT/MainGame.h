@@ -6,6 +6,9 @@
 
 #include "glslProgram.h"
 #include "Sprite.h"
+#include "GLTexture.h"
+
+#include "ImageLoader.h"
 
 #define uint unsigned int
 
@@ -34,6 +37,7 @@ private:
 
 	Sprite _sprite;
 	GLSLProgram _program;
+	GLTexture _texture;
 
 	float _time;
 
